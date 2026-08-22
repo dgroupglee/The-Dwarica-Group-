@@ -1,0 +1,182 @@
+:root {
+  --bg: #070b12;
+  --bg-2: #0d1523;
+  --panel: #0f1724;
+  --paper: #f3f1ec;
+  --text: #f5f6f8;
+  --text-soft: rgba(245, 246, 248, 0.7);
+  --muted: rgba(245, 246, 248, 0.46);
+  --gold: #d4a84a;
+  --gold-strong: #f1c864;
+  --blue: #6c8fe7;
+  --line: rgba(255,255,255,0.08);
+  --shadow: rgba(0,0,0,0.32);
+  --page-width: 1240px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; }
+
+h1, h2, h3 { margin: 0; font-family: 'Cormorant', Georgia, serif; font-weight: 600; letter-spacing: -0.04em; line-height: 0.95; }
+.site-shell { min-height: 100vh; }
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(7, 11, 18, 0.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.topbar-inner {
+  width: min(var(--page-width), calc(100% - 48px));
+  margin: 0 auto;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(212,168,74,0.75);
+  color: var(--gold);
+  font-family: 'Cormorant', Georgia, serif;
+  font-size: 1.1rem;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.nav a {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
+.market-shell, .consignment-shell { padding: 56px 0 80px; }
+.market-intro,
+.market-grid,
+.listing-grid,
+.page-shell,
+.consignment-shell,
+.consignment-grid {
+  width: min(var(--page-width), calc(100% - 48px));
+  margin: 0 auto;
+}
+.page-kicker {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.market-header h1 {
+  margin-top: 12px;
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  max-width: 820px;
+}
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 30px;
+}
+.market-door {
+  position: relative;
+  min-height: 560px;
+  padding: 30px 22px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(19, 28, 36, 0.96), rgba(9, 12, 17, 0.97));
+  box-shadow: 0 26px 58px rgba(0,0,0,0.22);
+}
+.market-door::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212,168,74,0.12), transparent 42%, rgba(108,143,231,0.08));
+}
+.market-door-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.market-door-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.market-door h2 { font-size: clamp(2.5rem, 3.6vw, 4rem); margin-bottom: 14px; }
+.market-door p { color: var(--text-soft); font-size: 0.98rem; line-height: 1.8; }
+.market-door .door-link {
+  margin-top: 26px;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.listing-header {
+  display: flex; align-items: end; justify-content: space-between; gap: 18px; margin: 32px 0 24px;
+}
+.listing-header h1 { font-size: clamp(2.8rem, 5vw, 4.8rem); }
+.listing-header .meta {
+  color: var(--muted); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+}
+.listing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.listing-card {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--line); overflow: hidden;
+}
+.listing-image {
+  height: 240px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, rgba(212,168,74,0.18), rgba(108,143,231,0.12), rgba(9,12,17,0.72));
+  font-family: 'Cormorant', Georgia, serif; font-size: 2.1rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.8);
+}
+.listing-body { padding: 18px 18px 20px; }
+.listing-meta {
+  display: flex; justify-content: space-between; gap: 12px; color: var(--gold); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.listing-card h3 { margin-top: 14px; font-size: clamp(2rem, 2.6vw, 2.8rem); }
+.listing-card p { color: var(--text-soft); margin-top: 10px; line-height: 1.7; }
+.listing-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.price { font-size: 1.2rem; font-weight: 600; }
+.bookmark-btn {
+  border: 1px solid rgba(212,168,74,0.45); background: rgba(212,168,74,0.08); color: var(--text); padding: 10px 14px; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer;
+}
+.consignment-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 22px; }
+.consignment-panel { background: rgba(255,255,255,0.02); border: 1px solid var(--line); padding: 26px 22px; }
+.consignment-panel h2 { font-size: clamp(2.4rem, 4vw, 4rem); margin-bottom: 12px; }
+.consignment-panel p, .consignment-panel li { color: var(--text-soft); line-height: 1.8; }
+.consignment-panel ul { margin: 18px 0 0; padding-left: 18px; }
+label {
+  display: grid; gap: 8px; color: var(--text-soft); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+input, textarea { width: 100%; border: 1px solid var(--line); background: rgba(255,255,255,0.015); color: var(--text); padding: 14px 16px; font-size: 15px; }
+textarea { min-height: 120px; resize: vertical; }
+.submit-btn {
+  width: fit-content; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-strong)); color: #0b1119; padding: 15px 22px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; margin-top: 18px;
+}
+@media (max-width: 980px) { .market-grid, .listing-grid, .consignment-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .topbar-inner, .market-intro, .market-grid, .listing-grid, .page-shell, .consignment-shell, .consignment-grid { width: min(var(--page-width), calc(100% - 28px)); }
+  .listing-header { flex-direction: column; align-items: flex-start; }
+}
