@@ -57,9 +57,9 @@ export default function MarketGateway() {
           <Link
             key={door.id}
             to={door.path}
-            className="market-door group relative min-h-[560px] overflow-hidden border border-[#C5A059]/70 bg-[#101010] transition duration-300 hover:border-[#C5A059] hover:shadow-[0_0_30px_rgba(197,160,89,0.18)]"
+            className="market-door group relative min-h-[560px] overflow-hidden border border-[#C5A059]/70 bg-[var(--card)] transition duration-300 hover:border-[#C5A059] hover:shadow-[0_0_30px_rgba(197,160,89,0.18)]"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#181818] via-[#101010] to-[#0A0A0A] transition duration-500 group-hover:from-[#1D1D1D]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#121212] via-[var(--card)] to-[#0A0A0A] transition duration-500 group-hover:from-[#121212]" />
 
             <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-8">
               <span className="mb-4 text-[10px] uppercase tracking-[0.25em] text-[#C5A059]">{door.label}</span>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RollingMetric } from './CinematicSystems';
 
 
@@ -11,10 +11,16 @@ const heroStats = [
 
 export default function HeroSection() {
   const root = useRef(null);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   return (
     <section ref={root} id="hero" className="hero-section site-shell">
-      <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background" />
+      {isMobile ? <div className="hero-mobile-background" aria-hidden="true" /> : <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background" />}
       <div className="hero-video-overlay" aria-hidden="true" />
       <div className="hero-grid">
         <div className="hero-copy">

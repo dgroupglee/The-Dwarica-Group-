@@ -23,15 +23,16 @@ export default function AutomobilesRealm() {
   const [selected, setSelected] = useState(Object.fromEntries(vehicles.map((vehicle) => [vehicle.id, vehicle.variations[0].id])));
   const [inquiry, setInquiry] = useState(null);
   const [priceSort, setPriceSort] = useState('Default');
+  const [vehicleCategory, setVehicleCategory] = useState('All');
   const [submitted, setSubmitted] = useState(false);
   const [drawerItem, setDrawerItem] = useState(null);
   const isAccountHolder = user && !user.is_anonymous;
   const setVariation = (vehicleId, variationId) => setSelected((current) => ({ ...current, [vehicleId]: variationId }));
-  const visibleVehicles = useMemo(() => [...vehicles].sort((left, right) => {
+  const visibleVehicles = useMemo(() => vehicles.filter((vehicle) => vehicleCategory === 'All' || (vehicleCategory === 'SUV' && /GLS|Cullinan|Urus|Bentayga/i.test(vehicle.model)) || (vehicleCategory === 'Sedan' && /S580|760|Flying Spur|Ghost/i.test(vehicle.model)) || (vehicleCategory === 'Convertible' && /Convertible|Spider|Cabriolet/i.test(vehicle.model)) || (vehicleCategory === 'Coupe' && /Coupe|GT/i.test(vehicle.model))).sort((left, right) => {
     if (priceSort === 'Price: Low to High') return Math.min(...left.variations.map((item) => item.price)) - Math.min(...right.variations.map((item) => item.price));
     if (priceSort === 'Price: High to Low') return Math.min(...right.variations.map((item) => item.price)) - Math.min(...left.variations.map((item) => item.price));
     return 0;
-  }), [priceSort]);
+  }), [priceSort, vehicleCategory]);
   const submitInquiry = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -56,6 +57,7 @@ export default function AutomobilesRealm() {
   return <section className="realm-shell">
     <div className="realm-header"><div className="realm-title"><span className="section-kicker">Automobiles</span><h1 className="section-title">Confirmed vehicles. Clear configurations.</h1><p className="realm-intro">Ultra-luxury motorcars with transparent configuration, pricing, and delivery logistics.</p></div><Link to="/market" className="back-link">Back to doors</Link></div>
     {notice ? <div className="access-banner">{notice}</div> : null}
+    <div className="market-filters automobile-filters">{['All', 'Sedan', 'SUV', 'Convertible', 'Coupe'].map((item) => <button key={item} type="button" className={vehicleCategory === item ? 'market-filter market-filter--active' : 'market-filter'} onClick={() => setVehicleCategory(item)}>{item}</button>)}</div>
     <div className="market-sort-row"><label htmlFor="automobile-price-sort">Sort automobiles</label><select id="automobile-price-sort" value={priceSort} onChange={(event) => setPriceSort(event.target.value)}><option>Default</option><option>Price: Low to High</option><option>Price: High to Low</option></select></div>
     <motion.div layout className="realm-grid realm-grid--three">{visibleVehicles.map((vehicle) => { const variation = vehicle.variations.find((item) => item.id === selected[vehicle.id]); const isSaved = savedItems.includes(variation.id); return <motion.article layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="realm-card vehicle-card" key={vehicle.id}>
       <div className="inventory-image-placeholder"><span>{vehicle.model}</span></div>

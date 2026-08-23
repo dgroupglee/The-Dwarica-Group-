@@ -11,7 +11,8 @@ const navItems = [
 ];
 
 export default function Navigation() {
-  const { savedItems } = useAuth();
+  const { savedItems, user } = useAuth();
+  const authenticated = Boolean(user && !user.is_anonymous);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -36,6 +37,7 @@ export default function Navigation() {
           ))}
           <Link to="/portal" className="transition hover:text-[#C5A059]">Private Portal</Link>
           <Link to="/lp-portal" className="transition hover:text-[#C5A059]">LP Portal</Link>
+          {authenticated ? <Link to="/house-view" className="transition hover:text-[#C5A059]">House View</Link> : null}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -96,6 +98,7 @@ export default function Navigation() {
               ))}
               <Link to="/market" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-[#C5A059]">Marketplace</Link>
               <Link to="/lp-portal" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-white/70 transition hover:text-[#C5A059]">LP Portal</Link>
+              {authenticated ? <Link to="/house-view" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-white/70 transition hover:text-[#C5A059]">House View</Link> : null}
             </div>
           </motion.nav>
         ) : null}

@@ -56,7 +56,7 @@ export default function TimepiecesRealm() {
 
   const visibleItems = useMemo(() => inventory.filter((item) => {
     const query = searchTerm.trim().toLowerCase();
-    const matchesCategory = category === 'All' || item.category === category;
+    const matchesCategory = category === 'All' || item.category === category || (category === 'Diamonds' && (item.category === 'Fine Jewelry' || item.model.toLowerCase().includes('diamond')));
     const matchesSearch = !query || [item.brand, item.model, item.reference || item.model].some((value) => value.toLowerCase().includes(query));
     return matchesCategory && matchesSearch;
   }).sort((left, right) => {
@@ -100,7 +100,7 @@ export default function TimepiecesRealm() {
       </div>
       <label className="market-search"><span>Search inventory</span><input type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search by brand, model, or reference..." /></label>
       <div className="market-filter-bar">
-        <div className="market-filters">{['All', 'Watches', 'Chains & Links', 'Bracelets', 'Rings', 'Fine Jewelry'].map((item) => <button key={item} type="button" className={category === item ? 'market-filter market-filter--active' : 'market-filter'} onClick={() => setCategory(item)}>{item}</button>)}</div>
+        <div className="market-filters">{['All', 'Watches', 'Chains & Links', 'Bracelets', 'Rings', 'Diamonds'].map((item) => <button key={item} type="button" className={category === item ? 'market-filter market-filter--active' : 'market-filter'} onClick={() => setCategory(item)}>{item}</button>)}</div>
         <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort inventory"><option>Newest</option><option>Price (Low-High)</option><option>Price (High-Low)</option><option>Brand</option></select>
       </div>
       {notice ? <div className="access-banner">{notice}</div> : null}

@@ -26,15 +26,21 @@ import LPPortalPage from './pages/LPPortalPage';
 import PasswordResetPage from './pages/PasswordResetPage';
 import { supabase } from './utils/supabaseClient';
 import { CinematicInteractionSystems, FilmGrainOverlay, LiveTelemetryBar } from './components/CinematicSystems';
+import AUMVisualizer from './components/AUMVisualizer';
+import TrackRecordLedger from './components/TrackRecordLedger';
+import MarketTicker from './components/MarketTicker';
+import HouseViewPage from './pages/HouseViewPage';
 
 function HomePage() {
   return (
     <>
       <HeroSection />
       <FirmIdentitySection />
-      <ManifestoSection />
       <CompoundingEngineFlow />
       <SevenStrategiesAccordion />
+      <AUMVisualizer />
+      <TrackRecordLedger />
+      <ManifestoSection />
       <InvestorPitchSection />
       <CapitalMarketsSection />
       <PrincipalsSection />
@@ -131,6 +137,7 @@ function EmailAccessModal() {
 function AppContent() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F7]">
+      <MarketTicker />
       <Navigation />
       <main>
         <AuthSessionRedirect />
@@ -145,6 +152,7 @@ function AppContent() {
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route path="/auth/reset" element={<PasswordResetPage />} />
           <Route path="/lp-portal" element={<LPPortalPage />} />
+          <Route path="/house-view" element={<HouseViewPage />} />
         </Routes>
       </main>
       <FloatingAllocationCta />

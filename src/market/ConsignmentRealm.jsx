@@ -93,7 +93,7 @@ export default function ConsignmentRealm() {
               <input className="sr-only" type="file" accept="image/jpeg,image/png,image/heic" multiple onChange={(event) => handleFiles(event.target.files)} />
               <p className="text-xs text-white/40">{fileNames.length ? fileNames.join(', ') : 'Drop photos here — or click to upload'}</p><p className="mt-1 text-[10px] text-white/20">JPEG, PNG, HEIC accepted</p>
             </label>
-            {error ? <p role="alert" className="text-xs text-red-300">{error}</p> : null}
+            {error ? <p role="alert" className="text-xs text-[#C5A059]">{error}</p> : null}
             <button type="submit" disabled={submitting} className="w-full border border-[#C5A059] bg-[#C5A059] px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A0A0A]">{submitting ? 'Routing securely…' : 'Submit for Review'}</button>
           </form>
         )}
