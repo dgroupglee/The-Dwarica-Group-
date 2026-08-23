@@ -10,6 +10,12 @@ const instruments = [
   ['Thematic Macro', 'Policy shifts, rates, global news, and market signals are condensed into a single operating view that informs capital allocation and portfolio timing.'],
 ];
 
+const signalLanes = [
+  ['01', 'Observe', 'Rates, liquidity, and market structure'],
+  ['02', 'Price', 'Basis, volatility, and downside'],
+  ['03', 'Deploy', 'Timing, sizing, and optionality'],
+];
+
 export default function CapitalMarketsSection() {
   const root = useRef(null);
   const [activeInstrument, setActiveInstrument] = useState(0);
@@ -23,6 +29,27 @@ export default function CapitalMarketsSection() {
 
   return (
     <section ref={root} id="capital-markets" className="capital-markets-section">
+      <aside className="market-signal-console" aria-label="Market intelligence operating console">
+        <div className="market-console-header">
+          <span className="section-kicker">Operating signal console</span>
+          <span className="market-console-status"><i /> Live desk view</span>
+        </div>
+        <div className="market-console-readout">
+          <span>Decision standard</span>
+          <strong>Timing before velocity.</strong>
+          <p>Every market input is translated into a decision about basis, durability, or the next allocation.</p>
+        </div>
+        <div className="market-signal-lanes" aria-label="Capital decision sequence">
+          {signalLanes.map(([number, label, detail], index) => (
+            <div className={`market-signal-lane ${index === 1 ? 'is-current' : ''}`} key={number}>
+              <span>{number}</span>
+              <div><strong>{label}</strong><small>{detail}</small></div>
+              {index < signalLanes.length - 1 ? <b aria-hidden="true">→</b> : null}
+            </div>
+          ))}
+        </div>
+        <div className="market-console-footer"><span>System posture</span><strong>Selective deployment</strong></div>
+      </aside>
       <div className="capital-instruments">
         <span className="section-kicker">Capital markets / shared leadership</span>
         <h2 className="section-title">Market intelligence is treated as a core operating input.</h2>
