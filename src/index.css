@@ -41,11 +41,6 @@ body {
 
 .motion-word { display: inline-block; will-change: transform, opacity, filter; }
 
-.parallax-glows { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.parallax-glow { position: absolute; width: 46vw; height: 46vw; border-radius: 50%; will-change: transform; }
-.parallax-glow--one { top: 4%; left: -16%; background: radial-gradient(circle, rgba(37,64,113,0.2), transparent 68%); }
-.parallax-glow--two { top: 34%; right: -18%; background: radial-gradient(circle, rgba(212,168,74,0.07), transparent 68%); }
-
 body::before {
   content: '';
   position: fixed;
