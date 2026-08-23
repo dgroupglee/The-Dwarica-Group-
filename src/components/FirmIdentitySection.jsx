@@ -1,10 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-
 export default function FirmIdentitySection() {
   const root = useRef(null);
-
   useLayoutEffect(() => {
     const ctx = gsap.context(() => gsap.fromTo('.identity-copy', { opacity: 0, x: 100, rotateY: 14 }, { opacity: 1, x: 0, rotateY: 0, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top 80%', end: 'center center', scrub: 1 } }), root);
     return () => ctx.revert();

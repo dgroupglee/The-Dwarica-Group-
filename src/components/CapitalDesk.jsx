@@ -50,6 +50,8 @@ export default function CapitalDesk() {
 
           <form className="capital-intake-form" onSubmit={handleSubmit}>
             <div className="capital-form-grid">
+              <label><span>Principal name</span><input name="principalName" type="text" placeholder="Your name" required /></label>
+              <label><span>Entity / institution</span><input name="entity" type="text" placeholder="Institution or family office" required /></label>
               <label>
                 <span>Target allocation range</span>
                 <select name="allocationRange" defaultValue="">
@@ -63,30 +65,11 @@ export default function CapitalDesk() {
                 <span>Deployment horizon</span>
                 <input name="deploymentHorizon" type="text" placeholder="30 / 90 / 180 days" required />
               </label>
+              <label className="full-width"><span>Direct contact</span><input name="directContact" type="email" placeholder="you@example.com" required /></label>
               <label className="full-width">
                 <span>Message</span>
                 <textarea name="message" rows="5" placeholder="Describe the mandate, timing, and desired structure." required />
               </label>
-            </div>
-            <div className="principal-summary-footer">
-              <div className="principal-summary-heading">
-                <span>Principal routing</span>
-                <p>Secure contact details for direct follow-up.</p>
-              </div>
-              <div className="principal-summary-grid">
-                <label>
-                  <span>Principal name</span>
-                  <input name="principalName" type="text" placeholder="Your name" required />
-                </label>
-                <label>
-                  <span>Entity / institution</span>
-                  <input name="entity" type="text" placeholder="Institution or family office" required />
-                </label>
-                <label>
-                  <span>Direct contact</span>
-                  <input name="directContact" type="email" placeholder="you@example.com" required />
-                </label>
-              </div>
             </div>
             <button type="submit">Route to principal desk</button>
             {submitted ? <span className="success-note">Inquiry routed to the principal desk.</span> : null}
