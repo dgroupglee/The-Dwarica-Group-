@@ -3,11 +3,54 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase credentials in .env file.')
+const unavailableError = new Error('Supabase is not configured for this deployment.')
+const unavailableQuery = () => Promise.resolve({ data: [], error: unavailableError })
+const unavailableBuilder = () => {
+  const builder = {
+    select: () => builder,
+    insert: () => builder,
+    upsert: () => builder,
+    update: () => builder,
+    delete: () => builder,
+    eq: () => builder,
+    in: () => builder,
+    gt: () => builder,
+    order: () => builder,
+    limit: () => builder,
+    maybeSingle: () => Promise.resolve({ data: null, error: unavailableError }),
+    single: () => Promise.resolve({ data: null, error: unavailableError }),
+    then: (...args) => unavailableQuery().then(...args),
+  }
+  return builder
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+function createUnavailableClient() {
+  return {
+    auth: {
+      getSession: () => Promise.resolve({ data: { session: null }, error: unavailableError }),
+      getUser: () => Promise.resolve({ data: { user: null }, error: unavailableError }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => undefined } } }),
+      signInAnonymously: () => Promise.resolve({ data: { user: null }, error: unavailableError }),
+      signInWithOtp: () => Promise.resolve({ data: null, error: unavailableError }),
+      signInWithPassword: () => Promise.resolve({ data: null, error: unavailableError }),
+      signUp: () => Promise.resolve({ data: null, error: unavailableError }),
+      resetPasswordForEmail: () => Promise.resolve({ data: null, error: unavailableError }),
+      updateUser: () => Promise.resolve({ data: null, error: unavailableError }),
+      signOut: () => Promise.resolve({ error: unavailableError }),
+    },
+    from: unavailableBuilder,
+    channel: () => ({ on: () => ({ on: () => ({ subscribe: () => undefined }) }) }),
+    removeChannel: () => undefined,
+  }
+}
+
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : createUnavailableClient()
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase credentials are missing; running with local-only access.')
+}
 
 export async function sendMagicLink(email) {
   return supabase.auth.signInWithOtp({
