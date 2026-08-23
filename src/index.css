@@ -313,6 +313,8 @@ html.lenis {
   opacity: .92;
 }
 
+.hero-video-layer video { width: 100%; height: 100%; display: block; object-fit: cover; opacity: .34; }
+
 .hero-mobile-background { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse at 60% 40%, rgba(197,160,89,0.08) 0%, transparent 60%), #0A0A0A; }
 
 .hero-video-overlay {
@@ -691,6 +693,10 @@ html.lenis {
 .instrument-line p { margin: 12px 0 4px; max-width: 46ch; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 0.85rem; letter-spacing: 0; line-height: 1.7; text-transform: none; }
 .instrument-line--active { border-top-color: var(--gold); color: var(--gold); }
 .capital-markets-intro { max-width: 52ch; margin: 24px 0 0; color: var(--muted); line-height: 1.8; }
+.automobile-make-group { margin-bottom: 72px; }
+.automobile-make-header { display: flex; align-items: center; gap: 22px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid rgba(197,160,89,.18); }
+.automobile-make-header h2 { margin: 0; color: var(--text-primary); font: 500 1.8rem/1 'Cormorant', Georgia, serif; }
+.automobile-make-header span { color: var(--gold); font: 9px 'DM Mono', monospace; letter-spacing: .12em; text-transform: uppercase; }
 
 .market-signal-console { position: relative; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 30px; border: 1px solid rgba(197,160,89,.34); background: linear-gradient(145deg, rgba(20,20,20,.98), rgba(10,10,10,.98)); }
 .market-signal-console::before { content: ''; position: absolute; top: 0; right: 0; width: 42%; height: 42%; pointer-events: none; background: radial-gradient(circle, rgba(197,160,89,.12), transparent 68%); }

@@ -20,7 +20,12 @@ export default function HeroSection() {
 
   return (
     <section ref={root} id="hero" className="hero-section site-shell">
-      {isMobile ? <div className="hero-mobile-background" aria-hidden="true" /> : <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background" />}
+      {isMobile ? <div className="hero-mobile-background" aria-hidden="true" /> : <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background">
+        {/* Replace /hero-video.mp4 with actual video file when available */}
+        <video autoPlay muted loop playsInline aria-hidden="true">
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>}
       <div className="hero-video-overlay" aria-hidden="true" />
       <div className="hero-grid">
         <div className="hero-copy">
