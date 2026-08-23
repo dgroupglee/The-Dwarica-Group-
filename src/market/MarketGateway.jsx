@@ -42,7 +42,7 @@ export default function MarketGateway() {
   }, []);
 
   return (
-    <section ref={ref} className="min-h-screen bg-[#050505] px-4 pb-20 pt-12 text-white md:px-6">
+    <section ref={ref} className="min-h-screen bg-[#0A0A0A] px-4 pb-20 pt-12 text-white md:px-6">
       <div className="mx-auto mb-8 max-w-[1520px]">
         <div className="mb-4 inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.24em] text-[#C5A059] before:h-px before:w-6 before:bg-[#C5A059]">
           Three Doors
@@ -57,9 +57,9 @@ export default function MarketGateway() {
           <Link
             key={door.id}
             to={door.path}
-            className="market-door group relative min-h-[560px] overflow-hidden border border-[#C5A059]/70 bg-[#0b0e12] transition duration-300 hover:border-[#C5A059] hover:shadow-[0_0_30px_rgba(197,160,89,0.18)]"
+            className="market-door group relative min-h-[560px] overflow-hidden border border-[#C5A059]/70 bg-[#101010] transition duration-300 hover:border-[#C5A059] hover:shadow-[0_0_30px_rgba(197,160,89,0.18)]"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#162448] via-[#0b1220] to-[#050505] transition duration-500 group-hover:from-[#1d3158]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#181818] via-[#101010] to-[#0A0A0A] transition duration-500 group-hover:from-[#1D1D1D]" />
 
             <div className="relative z-10 flex h-full flex-col justify-end p-6 md:p-8">
               <span className="mb-4 text-[10px] uppercase tracking-[0.25em] text-[#C5A059]">{door.label}</span>

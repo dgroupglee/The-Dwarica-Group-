@@ -14,6 +14,8 @@ export default function HeroSection() {
 
   return (
     <section ref={root} id="hero" className="hero-section site-shell">
+      <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background" />
+      <div className="hero-video-overlay" aria-hidden="true" />
       <div className="hero-grid">
         <div className="hero-copy">
           <div className="hero-monogram" aria-label="The Dwarica Group mark">D<span>G</span></div>

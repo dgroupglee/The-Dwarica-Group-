@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
     if (user && !user.is_anonymous) return undefined;
     setSavedItems(dualBrain.brain.favorites.map((item) => item.id || item.item_id).filter(Boolean));
     return undefined;
-  }, [dualBrain.brain.favorites, user]);
+  }, [user]);
 
   useEffect(() => {
     if (!user || user.is_anonymous) return undefined;
@@ -139,7 +139,7 @@ export function AuthProvider({ children }) {
       setToastMessage('Removed from your private vault.');
       return { ok: true, saved: false };
     }
-    const nextUser = await authenticateSilently();
+    const nextUser = user && !user.is_anonymous ? user : await authenticateSilently();
     if (!nextUser) return { ok: false, saved: false };
     setLastAction({ type: saved ? 'favorite_added' : 'favorite_removed', assetId, at: new Date().toISOString() });
     setToastMessage(saved ? 'Added to your private vault.' : 'Removed from your private vault.');

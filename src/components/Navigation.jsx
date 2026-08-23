@@ -15,7 +15,7 @@ export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050505]/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0A0A0A]/80 backdrop-blur-xl">
       <div className="mx-auto flex min-h-[82px] w-full max-w-[1420px] items-center justify-between gap-5 px-4 md:px-6">
         <div className="flex-1">
           <Link to="/" className="flex items-center text-white no-underline">
@@ -62,7 +62,7 @@ export default function Navigation() {
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
               <path d="M4 8.5h16v11H4zM6.5 8.5V6.8A2.8 2.8 0 0 1 9.3 4h5.4a2.8 2.8 0 0 1 2.8 2.8v1.7M9 12h6M9 15h6" />
             </svg>
-            {savedItems.length > 0 ? <span className="absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-[#C5A059] px-1 text-[9px] font-semibold text-[#050505]">{savedItems.length}</span> : null}
+            {savedItems.length > 0 ? <span className="absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-[#C5A059] px-1 text-[9px] font-semibold text-[#0A0A0A]">{savedItems.length}</span> : null}
           </Link>
           <Link
             to="/market"
