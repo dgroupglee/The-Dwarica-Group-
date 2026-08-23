@@ -1,6 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
-import gsap from 'gsap';
-import HeroScene from './HeroScene';
+import { useRef } from 'react';
 import { RollingMetric } from './CinematicSystems';
 
 
@@ -14,26 +12,9 @@ const heroStats = [
 export default function HeroSection() {
   const root = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to('.hero-scene', {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: root.current,
-          start: 'top top',
-          end: '30% top',
-          scrub: 1,
-        },
-      });
-    }, root);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section ref={root} id="hero" className="hero-section site-shell">
       <div className="hero-grid">
-        <HeroScene />
         <div className="hero-copy">
           <div className="hero-monogram" aria-label="The Dwarica Group mark">D<span>G</span></div>
           <div className="hero-kicker">Private capital architecture</div>

@@ -67,24 +67,6 @@ function FloatingAllocationCta() {
   );
 }
 
-function ParallaxGlowLayers() {
-  useEffect(() => {
-    const layers = [...document.querySelectorAll('.parallax-glow')];
-    let frameId;
-    const update = () => {
-      frameId = 0;
-      const offset = window.scrollY * 0.15;
-      layers.forEach((layer, index) => { layer.style.transform = `translate3d(0, ${offset * (index + 1) * 0.35}px, 0)`; });
-    };
-    const onScroll = () => { if (!frameId) frameId = requestAnimationFrame(update); };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => { window.removeEventListener('scroll', onScroll); if (frameId) cancelAnimationFrame(frameId); };
-  }, []);
-
-  return <div className="parallax-glows" aria-hidden="true"><div className="parallax-glow parallax-glow--one" /><div className="parallax-glow parallax-glow--two" /></div>;
-}
-
 function CardTiltSystem() {
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches) return undefined;
@@ -167,7 +149,6 @@ function AppContent() {
       <FloatingAllocationCta />
       <EmailAccessModal />
       <HeadingMotionSystem />
-      <ParallaxGlowLayers />
       <CardTiltSystem />
       <ScrollRevealSystem />
       <CinematicInteractionSystems />

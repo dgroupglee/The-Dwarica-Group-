@@ -5,17 +5,15 @@
 :root {
   color-scheme: dark;
   --bg-1: #050505;
-  --bg-2: #0b1220;
+  --bg-2: #111111;
   --panel: rgba(15, 22, 28, 0.9);
   --panel-soft: rgba(255,255,255,0.03);
   --line: rgba(255,255,255,0.08);
-  --text: #f5f5f1;
-  --muted: rgba(245,245,241,0.66);
+  --text: #F5F5F7;
+  --muted: rgba(245,245,247,0.66);
   --gold: #c5a059;
-  --gold-2: #f0c96d;
-  --blue: #1a315d;
-  --blue-soft: rgba(65, 95, 170, 0.18);
-  --obsidian: #090b0e;
+  --gold-2: #D4AF37;
+  --obsidian: #0A0A0A;
 }
 
 .font-mono,
@@ -34,7 +32,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #0a1628;
+  background: #0A0A0A;
   color: var(--text);
   font-family: 'Outfit', sans-serif;
   perspective: 1400px;
@@ -83,11 +81,6 @@ select {
   z-index: 1;
   min-height: 100vh;
 }
-
-.parallax-glows { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.parallax-glow { position: absolute; width: 46vw; height: 46vw; border-radius: 50%; will-change: transform; }
-.parallax-glow--one { top: 4%; left: -16%; background: radial-gradient(circle, rgba(37,64,113,0.2), transparent 68%); }
-.parallax-glow--two { top: 34%; right: -18%; background: radial-gradient(circle, rgba(212,168,74,0.07), transparent 68%); }
 
 .film-grain-overlay { position: fixed; inset: 0; z-index: 80; pointer-events: none; opacity: 0.045; mix-blend-mode: screen; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E"); }
 .gold-ripple { position: absolute; width: 12px; height: 12px; border: 1px solid rgba(212,168,64,.7); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); animation: gold-ripple .65s ease-out forwards; }
@@ -285,17 +278,7 @@ html.lenis body {
   place-items: center;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: #0a1628;
-}
-
-.hero-scene {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.8;
-  pointer-events: none;
-  mix-blend-mode: screen;
+  background: #0A0A0A;
 }
 
 .hero-grid {
@@ -612,12 +595,6 @@ html.lenis body {
   gap: 60px;
   padding-left: max(24px, calc((100vw - 1420px) / 2));
   padding-right: max(24px, calc((100vw - 1420px) / 2));
-}
-
-.identity-scene {
-  width: 100%;
-  height: 520px;
-  opacity: 0.78;
 }
 
 .identity-copy {
@@ -1140,7 +1117,7 @@ html.lenis body {
   padding: 120px 0 80px;
 }
 
-.capital-intake-wrap { display: grid; grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr); gap: 46px; margin-top: 48px; padding: 34px; border: 1px solid var(--gold); background: linear-gradient(145deg, rgba(18,22,28,0.96), rgba(8,11,15,0.98)); }
+.capital-intake-wrap { display: grid; grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr); gap: clamp(56px, 6vw, 96px); margin-top: 48px; padding: clamp(34px, 4vw, 56px); border: 1px solid var(--gold); background: linear-gradient(145deg, rgba(17,17,17,0.96), rgba(10,10,10,0.98)); }
 .capital-intake-copy h3 { margin: 18px 0 12px; font-family: 'Cormorant', Georgia, serif; font-size: clamp(2.7rem, 4vw, 4.8rem); line-height: 0.9; }
 .capital-intake-copy > p { max-width: 34ch; color: var(--muted); line-height: 1.8; }
 .desk-notes { display: grid; gap: 16px; margin-top: 34px; }
@@ -1149,6 +1126,15 @@ html.lenis body {
 .desk-notes strong { display: block; margin-top: 7px; font-family: 'Cormorant', Georgia, serif; font-size: 1.6rem; font-weight: 500; }
 .desk-notes p { margin: 4px 0 0; color: var(--muted); font-size: 0.84rem; line-height: 1.6; }
 .capital-intake-form { align-self: start; }
+.capital-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 40px; }
+.capital-form-grid label,
+.principal-summary-grid label { display: grid; gap: 10px; color: var(--muted); font: 9px 'DM Mono', monospace; letter-spacing: .14em; text-transform: uppercase; }
+.capital-form-grid .full-width { grid-column: 1 / -1; }
+.principal-summary-footer { margin-top: 44px; padding-top: 30px; border-top: 1px solid var(--line); }
+.principal-summary-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.principal-summary-heading span { color: var(--gold); font: 10px 'DM Mono', monospace; letter-spacing: .18em; text-transform: uppercase; }
+.principal-summary-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+.principal-summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 
 .site-footer {
   width: min(1420px, calc(100% - 48px));
@@ -2021,6 +2007,30 @@ html.lenis body {
 .modal-close svg { fill: none; stroke: currentColor; stroke-width: 1.5; }
 .market-toast { position: fixed; z-index: 90; right: 24px; bottom: 24px; max-width: 360px; border: 1px solid var(--gold); background: #0d1117; padding: 16px; color: var(--text); font-size: 11px; }
 
+/* Institutional surfaces: stable matte charcoal, off-white type, one metallic accent. */
+.page-shell,
+.hero-section,
+.portal-gated-page,
+.command-center-shell,
+.command-center,
+.lp-portal-page { background: #0A0A0A; }
+.capital-intake-wrap,
+.capital-card,
+.command-metric,
+.executive-cockpit-grid article,
+.lp-portal-card,
+.compounding-engine-interactive { background-color: #111111; }
+.command-sidebar,
+.portal-zone,
+.portal-discover-row a,
+.bespoke-discovery-engine,
+.discovery-card,
+.discovery-concierge-card,
+.command-teaser-card,
+.portal-sourcing-desk { background-color: #111111; }
+.command-center-shell > .command-center,
+.command-teaser-shield { background-color: #0A0A0A; }
+
 @media (max-width: 980px) {
   .navigation-inner,
   .hero-grid,
@@ -2047,6 +2057,11 @@ html.lenis body {
     justify-content: center;
     padding: 14px 0;
   }
+
+  .capital-form-grid,
+  .principal-summary-grid { grid-template-columns: 1fr; }
+  .capital-form-grid .full-width { grid-column: auto; }
+  .principal-summary-heading { display: grid; gap: 8px; }
 
   .brand-lockup,
   .market-nav {
