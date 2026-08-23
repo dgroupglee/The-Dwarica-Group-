@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 
 export default function ScrollRevealSystem() {
   useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const wordObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -18,6 +19,10 @@ export default function ScrollRevealSystem() {
 
     const context = gsap.context(() => {
       const cards = gsap.utils.toArray('.animate-in, .identity-theses > div, .principal-card, .join-panel, .investor-pitch-copy');
+      if (reduceMotion) {
+        gsap.set(cards, { clearProps: 'all', opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0 });
+        return;
+      }
       cards.forEach((card, index) => {
         gsap.fromTo(card, { opacity: 0, y: 60, scale: 0.95, rotateX: 8 }, {
           opacity: 1,

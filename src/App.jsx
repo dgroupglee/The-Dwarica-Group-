@@ -20,6 +20,7 @@ import { useAuth } from './context/useAuth';
 import PortalPage from './portal/PortalPage';
 import HeadingMotionSystem from './components/HeadingMotionSystem';
 import ScrollRevealSystem from './components/ScrollRevealSystem';
+import SmoothScrollSystem from './components/SmoothScrollSystem';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import LPPortalPage from './pages/LPPortalPage';
 import PasswordResetPage from './pages/PasswordResetPage';
@@ -151,6 +152,7 @@ function AppContent() {
       <HeadingMotionSystem />
       <CardTiltSystem />
       <ScrollRevealSystem />
+      <SmoothScrollSystem />
       <CinematicInteractionSystems />
       <FilmGrainOverlay />
       <LiveTelemetryBar />
