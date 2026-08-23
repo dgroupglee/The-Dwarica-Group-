@@ -1,7 +1,5 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 
 const strategies = [
@@ -16,33 +14,33 @@ const strategies = [
 
 export default function SevenStrategiesAccordion() {
   const ref = useRef(null);
+  const activeIndexRef = useRef(0);
+  const wheelCooldownRef = useRef(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeStrategy = strategies[activeIndex];
 
-  useLayoutEffect(() => {
-    let media;
-    const ctx = gsap.context(() => {
-      media = gsap.matchMedia();
-      media.add('(min-width: 769px)', () => ScrollTrigger.create({
-        trigger: ref.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.8,
-        invalidateOnRefresh: true,
-        onUpdate: ({ progress }) => {
-          const nextIndex = Math.min(strategies.length - 1, Math.floor(progress * strategies.length));
-          setActiveIndex((current) => current === nextIndex ? current : nextIndex);
-        },
-      }));
-      media.add('(max-width: 768px)', () => ScrollTrigger.create({
-        trigger: ref.current,
-        start: 'top 80%',
-        end: 'bottom 40%',
-        scrub: true,
-        onUpdate: ({ progress }) => setActiveIndex(Math.min(strategies.length - 1, Math.floor(progress * strategies.length))),
-      }));
-    }, ref);
-    return () => { media?.revert(); ctx.revert(); };
+  const selectStrategy = (index) => {
+    activeIndexRef.current = index;
+    setActiveIndex(index);
+  };
+
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return undefined;
+    const onWheel = (event) => {
+      if (window.innerWidth < 769 || Math.abs(event.deltaY) < 8) return;
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const current = activeIndexRef.current;
+      const next = Math.max(0, Math.min(strategies.length - 1, current + direction));
+      if (next === current) return;
+      event.preventDefault();
+      if (wheelCooldownRef.current) return;
+      wheelCooldownRef.current = true;
+      selectStrategy(next);
+      window.setTimeout(() => { wheelCooldownRef.current = false; }, 620);
+    };
+    section.addEventListener('wheel', onWheel, { passive: false });
+    return () => section.removeEventListener('wheel', onWheel);
   }, []);
 
   return (
@@ -56,7 +54,7 @@ export default function SevenStrategiesAccordion() {
         <div className="strategy-viewport">
           <div className="strategy-index-list" aria-label="Select a compounding strategy">
             <div className="strategy-console-label"><span>Operating lanes</span><strong>{String(activeIndex + 1).padStart(2, '0')} / 07</strong></div>
-            {strategies.map((strategy, index) => <button type="button" key={strategy.id} className={`strategy-number ${index === activeIndex ? 'active' : ''}`} onClick={() => setActiveIndex(index)} aria-pressed={index === activeIndex}><span>{strategy.id}</span><span>{strategy.title}</span></button>)}
+            {strategies.map((strategy, index) => <button type="button" key={strategy.id} className={`strategy-number ${index === activeIndex ? 'active' : ''}`} onClick={() => selectStrategy(index)} aria-pressed={index === activeIndex}><span>{strategy.id}</span><span>{strategy.title}</span></button>)}
             <div className="strategy-progress" aria-hidden="true"><span style={{ width: `${((activeIndex + 1) / strategies.length) * 100}%` }} /></div>
             <p className="strategy-console-hint">Select a lane or continue scrolling to move through the operating system.</p>
           </div>
