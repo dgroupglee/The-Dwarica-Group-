@@ -27,7 +27,6 @@ import PasswordResetPage from './pages/PasswordResetPage';
 import { supabase } from './utils/supabaseClient';
 import { CinematicInteractionSystems, FilmGrainOverlay, LiveTelemetryBar } from './components/CinematicSystems';
 import AUMVisualizer from './components/AUMVisualizer';
-import TrackRecordLedger from './components/TrackRecordLedger';
 import MarketTicker from './components/MarketTicker';
 import HouseViewPage from './pages/HouseViewPage';
 
@@ -39,7 +38,6 @@ function HomePage() {
       <CompoundingEngineFlow />
       <SevenStrategiesAccordion />
       <AUMVisualizer />
-      <TrackRecordLedger />
       <ManifestoSection />
       <InvestorPitchSection />
       <CapitalMarketsSection />
