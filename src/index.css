@@ -669,33 +669,6 @@ html.lenis {
   margin: 0 auto;
 }
 
-.capital-curves svg {
-  width: 100%;
-  height: 420px;
-  overflow: visible;
-}
-
-.chart-grid line { stroke: rgba(255,255,255,.075); stroke-width: 1; vector-effect: non-scaling-stroke; }
-.chart-axis { stroke: rgba(197,160,89,.35); stroke-width: 1; vector-effect: non-scaling-stroke; }
-.curve-path {
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
-.curve-path--primary { stroke: var(--gold); }
-.curve-path--secondary { stroke: rgba(255,255,255,.62); stroke-width: 1.5; }
-.curve-path--benchmark { stroke: rgba(197,160,89,.38); stroke-width: 1.5; stroke-dasharray: 5 6; }
-.chart-labels text { fill: rgba(255,255,255,.3); font: 9px 'DM Mono', monospace; letter-spacing: .14em; }
-.chart-legend { display: flex; flex-wrap: wrap; gap: 14px 22px; margin-top: 12px; color: rgba(255,255,255,.5); font: 9px 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
-.chart-legend span { display: inline-flex; align-items: center; gap: 8px; }
-.legend-mark { display: inline-block; width: 18px; height: 2px; background: var(--gold); }
-.legend-mark--secondary { background: rgba(255,255,255,.62); }
-.legend-mark--benchmark { background: repeating-linear-gradient(90deg, rgba(197,160,89,.7) 0 4px, transparent 4px 7px); }
-
 .capital-instruments ul {
   list-style: none;
   padding: 0;
@@ -2421,4 +2394,80 @@ html.lenis {
   .capital-flow-panel, .capital-flow-panel-shell { min-height: 0; }
   .capital-flow-panel-content { grid-template-columns: 1fr; min-height: 0; gap: 34px; padding: 36px 24px 30px; }
   .capital-flow-metric { border-top: 1px solid var(--gold-border); border-left: 0; }
+}
+
+/* Mobile hardening: prevent narrow columns, clipped labels, and text collisions. */
+@media (max-width: 767px) {
+  .identity-section,
+  .capital-markets-section,
+  .principals-grid,
+  .join-grid,
+  .hero-grid,
+  .capital-grid,
+  .capital-intake-wrap,
+  .dashboard-grid,
+  .portal-zones,
+  .lp-portal-grid,
+  .lp-summary-grid,
+  .lp-analytics-grid,
+  .capital-form-grid,
+  .principal-summary-grid,
+  .architecture-brief,
+  .identity-theses,
+  .puzzle-grid,
+  .strategy-meta,
+  .market-door-grid,
+  .realm-grid,
+  .realm-grid--three,
+  .field-grid,
+  .strategy-architecture-band,
+  .strategy-architecture-steps,
+  .strategy-cycle-header,
+  .strategy-cycle-track,
+  .strategy-lane-register,
+  .strategy-closing-panel,
+  .executive-cockpit-grid,
+  .firm-updates-list,
+  .command-center-grid,
+  .portal-sourcing-desk,
+  .lp-active-inventory-grid {
+    grid-template-columns: 1fr !important;
+    min-width: 0;
+  }
+
+  .identity-section,
+  .capital-markets-section {
+    width: calc(100% - 32px);
+    padding: 72px 0;
+  }
+
+  .section-title,
+  .hero-heading,
+  .strategy-heading,
+  .capital-flow-narrative h3,
+  .capital-flow-metric strong {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  .capital-markets-intro,
+  .instrument-line p,
+  .capital-flow-description,
+  .identity-copy p,
+  .principal-card p,
+  .join-panel p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .capital-flow-panel-content { align-items: stretch; }
+  .capital-flow-metric { min-width: 0; }
+  .capital-flow-metric strong { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+  .capital-flow-status { align-items: flex-start; flex-direction: column; }
+  .instrument-line button span,
+  .capital-flow-tab strong { min-width: 0; overflow-wrap: anywhere; }
+  .instrument-line button { gap: 14px; }
+  .instrument-line button b { flex: 0 0 24px; }
+  .site-footer { gap: 12px; }
 }
