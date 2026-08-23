@@ -27,7 +27,6 @@ import PasswordResetPage from './pages/PasswordResetPage';
 import { supabase } from './utils/supabaseClient';
 import { CinematicInteractionSystems, FilmGrainOverlay, LiveTelemetryBar } from './components/CinematicSystems';
 import AUMVisualizer from './components/AUMVisualizer';
-import MarketTicker from './components/MarketTicker';
 import HouseViewPage from './pages/HouseViewPage';
 
 function HomePage() {
@@ -135,7 +134,6 @@ function EmailAccessModal() {
 function AppContent() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F7]">
-      <MarketTicker />
       <Navigation />
       <main>
         <AuthSessionRedirect />
