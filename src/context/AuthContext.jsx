@@ -69,6 +69,14 @@ export function AuthProvider({ children }) {
       const inquiry = JSON.parse(pendingInquiry);
       supabase.from('inquiries').insert({ account_id: user.id, item_name: inquiry.item_name, item_category: inquiry.item_category, message: inquiry.message, status: 'received' }).then(({ error }) => { if (!error) window.localStorage.removeItem('pendingInquiry'); });
     }
+    const pendingAllocation = window.localStorage.getItem('pendingAllocationRequest');
+    if (pendingAllocation) {
+      try {
+        const allocation = JSON.parse(pendingAllocation);
+        const itemSummary = (allocation.items || []).map((item) => `${item.name} (${item.price == null ? 'Inquire for pricing' : `$${Number(item.price).toLocaleString('en-US')}`})`).join('\n');
+        supabase.from('inquiries').insert({ account_id: user.id, item_name: allocation.items?.length === 1 ? allocation.items[0].name : `${allocation.items?.length || 0} marketplace assets`, item_category: 'Marketplace allocation', message: `ALLOCATION REQUEST\n${itemSummary}\n\nShipping destination: ${allocation.shipping_destination}\nDirect inquiry notes: ${allocation.notes || 'None provided.'}`, status: 'reserve_requested' }).then(({ error }) => { if (!error) window.localStorage.removeItem('pendingAllocationRequest'); });
+      } catch { window.localStorage.removeItem('pendingAllocationRequest'); }
+    }
     return () => { cancelled = true; };
   }, [user]);
 

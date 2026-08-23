@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { supabase } from '../utils/supabaseClient';
 import { TelemetryDrawer } from '../components/CinematicSystems';
+import MarketplaceCartDrawer from '../components/MarketplaceCartDrawer';
 
 const inventory = [
   { id: 'nautilus-5711', brand: 'Patek Philippe', model: 'Nautilus 5711/1A-010', category: 'Watches', descriptor: 'Stainless steel / blue dial', price: 180000, ship: 'Ships within 5 days', papers: 'Full Set', condition: 'Unworn', detail: 'Production year 2021. Original blue sunburst dial with stainless steel bracelet.' },
@@ -45,6 +46,13 @@ export default function TimepiecesRealm() {
   const [submitted, setSubmitted] = useState(false);
   const [submittedInquiryId, setSubmittedInquiryId] = useState(null);
   const [drawerItem, setDrawerItem] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const toggleCartItem = (item) => {
+    setCartItems((current) => current.some((selected) => selected.id === item.id) ? current.filter((selected) => selected.id !== item.id) : [...current, item]);
+    setCartOpen(true);
+  };
 
   const visibleItems = useMemo(() => inventory.filter((item) => {
     const query = searchTerm.trim().toLowerCase();
@@ -88,7 +96,7 @@ export default function TimepiecesRealm() {
     <section className="realm-shell">
       <div className="realm-header">
         <div className="realm-title"><span className="section-kicker">Timepieces & Fine Jewelry</span><h1 className="section-title">Finished pieces. Immediate availability.</h1><p className="realm-intro">Authenticated watches and finished diamond pieces presented with transparent pricing and confirmed ship-by timing.</p></div>
-        <Link to="/market" className="back-link">Back to doors</Link>
+        <div className="realm-header-actions"><button type="button" className="market-cart-trigger" onClick={() => setCartOpen(true)} aria-expanded={cartOpen}>Allocation cart <span>{cartItems.length}</span></button><Link to="/market" className="back-link">Back to doors</Link></div>
       </div>
       <label className="market-search"><span>Search inventory</span><input type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search by brand, model, or reference..." /></label>
       <div className="market-filter-bar">
@@ -100,17 +108,20 @@ export default function TimepiecesRealm() {
         {visibleItems.map((item) => {
           const isSaved = savedItems.includes(item.id);
           const isOpen = expanded === item.id;
+          const inCart = cartItems.some((selected) => selected.id === item.id);
+          const isSold = item.status === 'Sold';
           return <motion.article layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: .94 }} transition={{ duration: .45 }} data-velocity key={item.id} className={`realm-card inventory-card ${isOpen ? 'inventory-card--expanded' : ''}`}>
               <div className="inventory-image-placeholder"><span>{item.brand}</span></div><button type="button" className="inventory-card-main" onClick={() => setExpanded(isOpen ? null : item.id)} aria-expanded={isOpen}>
               <span className="inventory-label">{item.brand}</span><h2>{item.model}</h2><p>{item.descriptor}</p><strong className="inventory-price">{formatPrice(item.price)}</strong><span className={`inventory-status ${statusClass(item.status)}`}>{item.status || 'Available'}</span><span className="ship-badge">{item.ship}</span>
             </button>
             <button type="button" className={`favorite-button ${isSaved ? 'favorite-button--saved' : ''} ${favoritePulseId === item.id ? 'favorite-button--pulse' : ''}`} aria-label={isSaved ? `Remove ${item.model}` : `Save ${item.model}`} aria-pressed={isSaved} onClick={(event) => { event.stopPropagation(); toggleFavorite({ id: item.id, name: item.model, category: item.category, price: item.price }); }}><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill={isSaved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 0 0 1.06-8.84Z" /></svg></button>
-            <div className="inventory-actions"><span className="inventory-hint">{isOpen ? 'Collapse details' : 'Open details'}</span><button type="button" className="inventory-hint-button" onClick={(event) => { event.stopPropagation(); setDrawerItem(item); }}>Open telemetry →</button></div>
+            <div className="inventory-actions"><span className="inventory-hint">{isOpen ? 'Collapse details' : 'Open details'}</span><button type="button" className="inventory-hint-button" onClick={(event) => { event.stopPropagation(); setDrawerItem(item); }}>Open telemetry →</button><button type="button" className={`reserve-inline-button ${inCart ? 'reserve-inline-button--active' : ''}`} disabled={isSold} onClick={(event) => { event.stopPropagation(); toggleCartItem(item); }}>{isSold ? 'Sold / unavailable' : inCart ? 'In allocation cart' : item.status === 'Reserved' ? 'Join reserve review' : 'Reserve asset'}</button></div>
             {isOpen ? <><div className={`inventory-detail-wrap ${user?.is_anonymous || !user ? 'inventory-detail-wrap--locked' : ''}`} role={user?.is_anonymous || !user ? 'button' : undefined} tabIndex={user?.is_anonymous || !user ? 0 : undefined} onClick={user?.is_anonymous || !user ? () => unlockDossier(item.id) : undefined} onKeyDown={user?.is_anonymous || !user ? (event) => { if (event.key === 'Enter' || event.key === ' ') unlockDossier(item.id); } : undefined}><div className="inventory-detail"><div><span>Condition</span><strong>{item.condition}</strong></div><div><span>Papers Status</span><strong>{item.papers}</strong></div><div><span>Production Year</span><strong>2021</strong></div><div><span>Previous Owners</span><strong>Private history available</strong></div><div><span>Service History</span><strong>Verified in private file</strong></div><div><span>Case Size</span><strong>Reference-specific</strong></div><div><span>Dial Color</span><strong>{item.descriptor}</strong></div><p>{item.detail}</p></div>{user?.is_anonymous || !user ? <div className="inventory-private-note"><span>PRIVATE INTELLIGENCE — ACCOUNT HOLDERS ONLY</span><div className="inventory-private-fields"><span>Papers Status</span><span>Previous Owners</span><span>Service History</span><span>Production Year</span><span>Case Size</span><span>Dial Color</span></div><em>Create your private DGroup account to access full asset intelligence.</em></div> : null}</div><div className="listing-inquiry" onClick={(event) => event.stopPropagation()}>{submittedInquiryId === item.id ? <p className="listing-inquiry-confirmation">Inquiry received. A principal will confirm your details within 24 hours.</p> : <form onSubmit={(event) => submitListingInquiry(event, item)}><span className="listing-inquiry-label">INQUIRE ABOUT THIS PIECE</span><input type="hidden" name="item" value={`${item.model} / ${item.reference || item.model}`} /><label>Your Email<input required type="email" name="email" placeholder="your@email.com" /></label><label>Message<textarea required name="message" placeholder="Any specific questions about this piece — papers, service history, provenance." /></label><button type="submit" className="primary-button">Submit Inquiry</button></form>}</div></> : null}
           </motion.article>;
         })}
       </AnimatePresence></motion.div>
       <TelemetryDrawer item={drawerItem} onClose={() => setDrawerItem(null)} category="Timepiece" />
+      <MarketplaceCartDrawer items={cartItems} open={cartOpen} onClose={() => setCartOpen(false)} onRemove={(id) => setCartItems((current) => current.filter((item) => item.id !== id))} onSubmitted={() => { setCartItems([]); }} />
       <div className="custom-inquiry"><p>Looking for something specific? The desk can facilitate a private inquiry.</p><button type="button" className="secondary-button" onClick={() => setCustomInquiry(true)}>Inquire</button></div>
       {customInquiry ? <div className="market-modal-backdrop" onClick={() => setCustomInquiry(false)}><div className="market-modal" onClick={(event) => event.stopPropagation()}><button type="button" className="modal-close" onClick={() => setCustomInquiry(false)} aria-label="Close inquiry"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg></button><span className="section-kicker">Private inquiry</span><h2>Describe the piece.</h2><form onSubmit={submitInquiry}><label>What are you looking for?<input required name="item" placeholder="Piece, brand, or reference" /></label><label>Your Email<input required name="email" type="email" placeholder="Direct email" /></label><button type="submit" className="primary-button">Submit inquiry</button></form></div></div> : null}
       {submitted ? <div className="market-toast" role="status">Inquiry received. A principal will confirm the next step within 24 hours.</div> : null}

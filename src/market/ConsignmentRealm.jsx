@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { supabase, triggerAutoAccountProvisioning } from '../utils/supabaseClient';
 
-const initialForm = { item_type: '', description: '', asking_price: '', email: '', condition: '' };
+const initialForm = { category: 'Timepiece', brand: '', reference_number: '', description: '', asking_price: '', email: '', condition: '', box_papers: '' };
 
 export default function ConsignmentRealm() {
   const [form, setForm] = useState(initialForm);
@@ -11,18 +11,22 @@ export default function ConsignmentRealm() {
   const [dragOver, setDragOver] = useState(false);
   const [fileNames, setFileNames] = useState([]);
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const updateField = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
 
   async function handleSubmit(event) {
     event.preventDefault();
     setError('');
-    if (!form.item_type.trim() || !form.condition.trim() || !form.description.trim() || !form.email.trim()) {
+    if (!form.category.trim() || !form.brand.trim() || !form.condition.trim() || !form.description.trim() || !form.email.trim()) {
       setError('Complete every required field before submitting.');
       return;
     }
+    setSubmitting(true);
     const provisioning = await triggerAutoAccountProvisioning('consignment', {
-      item_type: form.item_type,
+      item_type: form.category,
+      brand: form.brand,
+      reference_number: form.reference_number,
       description: form.description,
       email: form.email,
     });
@@ -30,12 +34,13 @@ export default function ConsignmentRealm() {
 
     if (!user) {
       setError(provisioning.error || 'Your submission could not be routed. Please try again.');
+      setSubmitting(false);
       return;
     }
 
     const { error: insertError } = await supabase.from('consignment_submissions').insert({
       account_id: user.id,
-      item_description: `${form.item_type} — ${form.condition} — ${form.description}`,
+      item_description: `${form.category} — ${form.brand}${form.reference_number ? ` / ${form.reference_number}` : ''} — Condition: ${form.condition} — Box & papers: ${form.box_papers || 'Not specified'} — ${form.description}`,
       asking_price: Number.parseFloat(form.asking_price) || null,
       photos: fileNames,
       status: 'received',
@@ -43,9 +48,11 @@ export default function ConsignmentRealm() {
 
     if (insertError) {
       setError(insertError.message);
+      setSubmitting(false);
       return;
     }
     setSubmitted(true);
+    setSubmitting(false);
   }
 
   const handleFiles = (files) => setFileNames([...files].map((file) => file.name));
@@ -64,7 +71,8 @@ export default function ConsignmentRealm() {
         <div className="flex flex-col justify-center">
           <span className="mb-3 text-[9px] uppercase tracking-[0.2em] text-[#C5A059]">Private desk routing</span>
           <h2 className="font-serif text-4xl uppercase leading-none tracking-[-0.04em] text-white md:text-5xl">Submit your piece for principal review.</h2>
-          <p className="mt-4 max-w-[34ch] text-base leading-8 text-white/75">Share the asset class, condition, and outline details. A principal will evaluate it and identify the right buyer within 24 hours.</p>
+          <p className="mt-4 max-w-[38ch] text-base leading-8 text-white/75">Share the asset class, condition, and outline details. A principal will evaluate it and identify the right buyer within 24 hours.</p>
+          <div className="consignment-shipping-note"><span>Secure direct shipping only</span><p>Accepted pieces move through a fully insured courier workflow. We do not conduct in-person handoffs or meetings.</p></div>
         </div>
 
         {submitted ? (
@@ -74,18 +82,19 @@ export default function ConsignmentRealm() {
           </motion.div>
         ) : (
           <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="grid gap-4 md:grid-cols-2">
-              {[['Item Type', 'item_type', 'e.g. Patek Philippe watch, Cuban link chain, Rolls-Royce...'], ['Condition', 'condition', 'Unworn / Excellent / Good / Fair'], ['Asking Price (USD)', 'asking_price', '0.00'], ['Your Email', 'email', 'your@email.com']].map(([label, name, placeholder]) => (
-                <label key={name} className="flex flex-col gap-2 text-[9px] uppercase tracking-[0.18em] text-[#C5A059]"><span>{label}</span><input className="border border-white/10 bg-[#0A0A0A] px-4 py-3 text-sm tracking-[0.04em] text-white placeholder:text-white/40" name={name} type={name === 'asking_price' ? 'number' : name === 'email' ? 'email' : 'text'} value={form[name]} onChange={updateField} required placeholder={placeholder} /></label>
+            <div className="grid gap-5 md:grid-cols-2">
+              {[['Brand', 'brand', 'e.g. Patek Philippe, Rolex, Cartier'], ['Reference Number', 'reference_number', 'e.g. 5711/1A-010'], ['Condition', 'condition', 'Unworn / Excellent / Good / Fair'], ['Box & Papers', 'box_papers', 'Full set / papers only / none'], ['Asking Price (USD)', 'asking_price', '0.00'], ['Your Email', 'email', 'your@email.com']].map(([label, name, placeholder]) => (
+                <label key={name} className="flex flex-col gap-2 text-[9px] uppercase tracking-[0.18em] text-[#C5A059]"><span>{label}</span><input className="border border-white/10 bg-[#0A0A0A] px-4 py-3 text-sm tracking-[0.04em] text-white placeholder:text-white/40" name={name} type={name === 'asking_price' ? 'number' : name === 'email' ? 'email' : 'text'} value={form[name]} onChange={updateField} required={['brand', 'condition', 'email'].includes(name)} placeholder={placeholder} /></label>
               ))}
             </div>
+            <label className="flex flex-col gap-2 text-[9px] uppercase tracking-[0.18em] text-[#C5A059]"><span>Asset Class</span><select className="border border-white/10 bg-[#0A0A0A] px-4 py-3 text-sm tracking-[0.04em] text-white" name="category" value={form.category} onChange={updateField}><option>Timepiece</option><option>Fine Jewelry</option><option>Other luxury asset</option></select></label>
             <label className="flex flex-col gap-2 text-[9px] uppercase tracking-[0.18em] text-[#C5A059]"><span>Description</span><textarea className="min-h-[140px] border border-white/10 bg-[#0A0A0A] px-4 py-3 text-sm leading-7 text-white placeholder:text-white/40" name="description" value={form.description} onChange={updateField} required placeholder="Describe the piece — model, year, papers, accessories, relevant history..." /></label>
             <label className={`block cursor-pointer border border-dashed p-8 text-center transition-colors ${dragOver ? 'border-[#C5A059]' : 'border-white/15'}`} onDragOver={(event) => { event.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)} onDrop={(event) => { event.preventDefault(); setDragOver(false); handleFiles(event.dataTransfer.files); }}>
               <input className="sr-only" type="file" accept="image/jpeg,image/png,image/heic" multiple onChange={(event) => handleFiles(event.target.files)} />
               <p className="text-xs text-white/40">{fileNames.length ? fileNames.join(', ') : 'Drop photos here — or click to upload'}</p><p className="mt-1 text-[10px] text-white/20">JPEG, PNG, HEIC accepted</p>
             </label>
             {error ? <p role="alert" className="text-xs text-red-300">{error}</p> : null}
-            <button type="submit" className="w-full border border-[#C5A059] bg-[#C5A059] px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A0A0A]">Submit for Review</button>
+            <button type="submit" disabled={submitting} className="w-full border border-[#C5A059] bg-[#C5A059] px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0A0A0A]">{submitting ? 'Routing securely…' : 'Submit for Review'}</button>
           </form>
         )}
       </div>
