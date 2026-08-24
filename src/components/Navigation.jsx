@@ -114,6 +114,7 @@ export default function Navigation() {
                 </Link>
               ))}
               <Link to="/market" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-[#C5A059]">Marketplace</Link>
+              <Link to="/portal" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-white/70 transition hover:text-[#C5A059]">Private Portal</Link>
               <Link to="/lp-portal" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-white/70 transition hover:text-[#C5A059]">LP Portal</Link>
               {authenticated ? <Link to="/house-view" onClick={() => setMobileOpen(false)} className="px-2 py-4 text-[10px] uppercase tracking-[0.22em] text-white/70 transition hover:text-[#C5A059]">House View</Link> : null}
             </div>
