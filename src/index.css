@@ -715,8 +715,37 @@ html.lenis {
 .automobile-make-header { display: flex; align-items: center; gap: 22px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid rgba(197,160,89,.18); }
 .automobile-make-header h2 { margin: 0; color: var(--text-primary); font: 500 1.8rem/1 'Cormorant', Georgia, serif; }
 .automobile-make-header span { color: var(--gold); font: 9px 'DM Mono', monospace; letter-spacing: .12em; text-transform: uppercase; }
+.automobile-master-list { display: grid; gap: 14px; }
+.automobile-master-card { overflow: hidden; border: 1px solid var(--border); background: var(--card); }
+.automobile-master-card.is-expanded { border-color: var(--gold-border); }
+.automobile-master-trigger { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 22px; align-items: center; width: 100%; min-height: 112px; padding: 24px 28px; border: 0; background: transparent; color: var(--text-primary); text-align: left; cursor: pointer; }
+.automobile-master-index { color: var(--gold); font: 9px 'DM Mono', monospace; letter-spacing: .12em; text-transform: uppercase; }
+.automobile-master-trigger > strong { color: var(--text-primary); font: 500 clamp(1.7rem, 3vw, 2.7rem)/.95 'Cormorant', Georgia, serif; }
+.automobile-master-summary { display: inline-flex; align-items: center; gap: 18px; color: var(--text-secondary); font: 9px 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+.automobile-master-summary b { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--gold-border); color: var(--gold); font-size: 18px; font-weight: 400; }
+.automobile-variation-stack { overflow: hidden; border-top: 1px solid var(--gold-border); }
+.automobile-variation-row { display: grid; grid-template-columns: minmax(180px, 1.3fr) minmax(160px, 1fr) minmax(100px, .7fr) auto minmax(270px, 1.8fr); gap: 18px; align-items: center; padding: 20px 28px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.automobile-variation-row:last-child { border-bottom: 0; }
+.automobile-variation-title, .automobile-variation-spec { display: grid; gap: 6px; min-width: 0; }
+.automobile-variation-title span, .automobile-variation-spec span, .automobile-private-readout span { color: var(--text-muted); font: 8px 'DM Mono', monospace; letter-spacing: .1em; text-transform: uppercase; }
+.automobile-variation-title strong, .automobile-variation-spec strong, .automobile-private-readout strong { color: var(--text-primary); font-size: 12px; line-height: 1.35; overflow-wrap: anywhere; }
+.automobile-variation-price { color: var(--gold); font: 400 1.5rem 'Cormorant', Georgia, serif; white-space: nowrap; }
+.automobile-variation-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.automobile-variation-actions .favorite-button { position: static; min-width: 44px; min-height: 44px; }
+.automobile-private-readout { grid-column: 1 / -1; display: grid; gap: 6px; padding: 12px 14px; border-left: 2px solid var(--gold); background: rgba(197,160,89,.05); text-align: left; }
+.automobile-private-readout--locked { border: 0; border-left: 2px solid rgba(197,160,89,.45); cursor: pointer; }
+@media (max-width: 767px) {
+  .automobile-master-trigger { grid-template-columns: 1fr auto; gap: 10px; min-height: 100px; padding: 20px 16px; }
+  .automobile-master-index { grid-column: 1 / -1; }
+  .automobile-master-summary { grid-column: 1 / -1; justify-content: space-between; }
+  .automobile-variation-row { grid-template-columns: 1fr 1fr; gap: 16px 12px; padding: 18px 16px; }
+  .automobile-variation-title { grid-column: 1 / -1; }
+  .automobile-variation-price { justify-self: start; }
+  .automobile-variation-actions { grid-column: 1 / -1; justify-content: flex-start; }
+}
 
-.market-signal-console { position: relative; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 30px; border: 1px solid rgba(197,160,89,.34); background: linear-gradient(145deg, rgba(20,20,20,.98), rgba(10,10,10,.98)); }
+.market-signal-console { position: relative; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 30px; border: 1px solid rgba(197,160,89,.34); background: linear-gradient(145deg, rgba(20,20,20,.98), rgba(10,10,10,.98)); transform: perspective(1100px) rotateX(var(--console-rotate-x, 0deg)) rotateY(var(--console-rotate-y, 0deg)); transform-style: preserve-3d; transition: transform .22s ease, border-color .25s ease, box-shadow .25s ease; will-change: transform; }
+.market-signal-console:hover { border-color: rgba(197,160,89,.58); box-shadow: 0 24px 60px rgba(0,0,0,.34); }
 .market-signal-console::before { content: ''; position: absolute; top: 0; right: 0; width: 42%; height: 42%; pointer-events: none; background: radial-gradient(circle, rgba(197,160,89,.12), transparent 68%); }
 .market-console-header, .market-console-footer { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .market-console-status { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font: 8px 'DM Mono', monospace; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
@@ -726,7 +755,7 @@ html.lenis {
 .market-console-readout strong { display: block; max-width: 10ch; margin: 12px 0; color: var(--text-primary); font: 500 clamp(2.4rem, 4vw, 3.8rem)/.88 'Cormorant', Georgia, serif; }
 .market-console-readout p { max-width: 32ch; margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.75; }
 .market-signal-lanes { position: relative; z-index: 1; display: grid; gap: 1px; background: rgba(255,255,255,.1); }
-.market-signal-lane { position: relative; display: grid; grid-template-columns: 28px 1fr auto; gap: 14px; align-items: center; min-height: 64px; padding: 12px 14px; background: rgba(18,18,18,.96); color: var(--text-muted); }
+.market-signal-lane { position: relative; display: grid; grid-template-columns: 28px 1fr auto; gap: 14px; align-items: center; width: 100%; min-height: 64px; padding: 12px 14px; border: 0; background: rgba(18,18,18,.96); color: var(--text-muted); text-align: left; cursor: pointer; transition: background .25s ease, color .25s ease; }
 .market-signal-lane > span { color: var(--text-muted); font: 9px 'DM Mono', monospace; }
 .market-signal-lane div { display: grid; gap: 5px; }
 .market-signal-lane strong { color: var(--text-primary); font: 500 1.15rem/1 'Cormorant', Georgia, serif; }
@@ -2038,6 +2067,10 @@ html.lenis {
 .realm-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 .inventory-card { position: relative; min-height: 350px; transition: transform 200ms ease, box-shadow 200ms ease; }
+.inventory-public-specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.08); }
+.inventory-public-specs div { display: grid; gap: 5px; min-width: 0; }
+.inventory-public-specs span { color: var(--text-muted); font: 8px 'DM Mono', monospace; letter-spacing: .1em; text-transform: uppercase; }
+.inventory-public-specs strong { color: var(--text-primary); font-size: 11px; line-height: 1.35; overflow-wrap: anywhere; }
 .inventory-image-placeholder { display: grid; place-items: center; min-height: 150px; margin: -22px -18px 22px; background: var(--surface); border-bottom: 1px solid var(--line); }
 .inventory-image-placeholder span { max-width: 80%; color: rgba(245,245,241,0.7); font-family: 'Cormorant', Georgia, serif; font-size: 1.8rem; text-align: center; }
 .favorite-button--pulse { animation: favorite-pulse 200ms ease; }

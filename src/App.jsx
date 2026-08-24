@@ -18,7 +18,6 @@ import AutomobilesRealm from './market/AutomobilesRealm';
 import ConsignmentRealm from './market/ConsignmentRealm';
 import { useAuth } from './context/useAuth';
 import PortalPage from './portal/PortalPage';
-import HeadingMotionSystem from './components/HeadingMotionSystem';
 import ScrollRevealSystem from './components/ScrollRevealSystem';
 import SmoothScrollSystem from './components/SmoothScrollSystem';
 import AuthCallbackPage from './pages/AuthCallbackPage';
@@ -153,7 +152,6 @@ function AppContent() {
       </main>
       <FloatingAllocationCta />
       <EmailAccessModal />
-      <HeadingMotionSystem />
       <CardTiltSystem />
       <ScrollRevealSystem />
       <SmoothScrollSystem />

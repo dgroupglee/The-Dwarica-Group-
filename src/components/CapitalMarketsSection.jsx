@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import gsap from 'gsap';
 
 const instruments = [
@@ -18,7 +19,23 @@ const signalLanes = [
 
 export default function CapitalMarketsSection() {
   const root = useRef(null);
+  const consoleRef = useRef(null);
+  const [activeSignal, setActiveSignal] = useState(1);
   const [activeInstrument, setActiveInstrument] = useState(0);
+  const signalCopy = [
+    ['Timing before velocity.', 'Observe the market structure first: rates, liquidity, and demand reveal where the basis is changing.'],
+    ['Price the downside.', 'Convert signal into a disciplined view of basis, volatility, and what must be true before capital moves.'],
+    ['Deploy with optionality.', 'Take the position when timing, sizing, and control align — then preserve flexibility for the next decision.'],
+  ];
+  const trackConsole = (event) => {
+    if (window.matchMedia('(pointer: coarse)').matches || !consoleRef.current) return;
+    const bounds = consoleRef.current.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - .5;
+    const y = (event.clientY - bounds.top) / bounds.height - .5;
+    consoleRef.current.style.setProperty('--console-rotate-x', `${y * -3}deg`);
+    consoleRef.current.style.setProperty('--console-rotate-y', `${x * 3}deg`);
+  };
+  const resetConsole = () => { consoleRef.current?.style.setProperty('--console-rotate-x', '0deg'); consoleRef.current?.style.setProperty('--console-rotate-y', '0deg'); };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -29,27 +46,26 @@ export default function CapitalMarketsSection() {
 
   return (
     <section ref={root} id="capital-markets" className="capital-markets-section">
-      <aside className="market-signal-console" aria-label="Market intelligence operating console">
+      <motion.aside ref={consoleRef} className="market-signal-console" aria-label="Market intelligence operating console" onPointerMove={trackConsole} onPointerLeave={resetConsole}>
         <div className="market-console-header">
           <span className="section-kicker">Operating signal console</span>
-          <span className="market-console-status"><i /> Live desk view</span>
+          <span className="market-console-status">Desk view</span>
         </div>
         <div className="market-console-readout">
           <span>Decision standard</span>
-          <strong>Timing before velocity.</strong>
-          <p>Every market input is translated into a decision about basis, durability, or the next allocation.</p>
+          <AnimatePresence mode="wait" initial={false}><motion.div key={activeSignal} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: .22 }}><strong>{signalCopy[activeSignal][0]}</strong><p>{signalCopy[activeSignal][1]}</p></motion.div></AnimatePresence>
         </div>
         <div className="market-signal-lanes" aria-label="Capital decision sequence">
           {signalLanes.map(([number, label, detail], index) => (
-            <div className={`market-signal-lane ${index === 1 ? 'is-current' : ''}`} key={number}>
+            <button type="button" className={`market-signal-lane ${index === activeSignal ? 'is-current' : ''}`} key={number} onClick={() => setActiveSignal(index)} onMouseEnter={() => setActiveSignal(index)}>
               <span>{number}</span>
               <div><strong>{label}</strong><small>{detail}</small></div>
               {index < signalLanes.length - 1 ? <b aria-hidden="true">→</b> : null}
-            </div>
+            </button>
           ))}
         </div>
         <div className="market-console-footer"><span>System posture</span><strong>Selective deployment</strong></div>
-      </aside>
+      </motion.aside>
       <div className="capital-instruments">
         <span className="section-kicker">Capital markets / shared leadership</span>
         <h2 className="section-title">Market intelligence is treated as a core operating input.</h2>
@@ -62,7 +78,7 @@ export default function CapitalMarketsSection() {
                 <span>{instrument}</span>
                 <b aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24"><path d={index === activeInstrument ? 'M5 12h14' : 'M12 5v14M5 12h14'} /></svg></b>
               </button>
-              {index === activeInstrument ? <p>{description}</p> : null}
+              <AnimatePresence initial={false}>{index === activeInstrument ? <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: .24 }}>{description}</motion.p> : null}</AnimatePresence>
             </li>
           ))}
         </ul>
