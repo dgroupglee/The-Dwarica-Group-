@@ -24,9 +24,10 @@ import AuthCallbackPage from './pages/AuthCallbackPage';
 import LPPortalPage from './pages/LPPortalPage';
 import PasswordResetPage from './pages/PasswordResetPage';
 import { supabase } from './utils/supabaseClient';
-import { CinematicInteractionSystems, FilmGrainOverlay, LiveTelemetryBar } from './components/CinematicSystems';
+import { CinematicInteractionSystems, FilmGrainOverlay } from './components/CinematicSystems';
 import AUMVisualizer from './components/AUMVisualizer';
 import HouseViewPage from './pages/HouseViewPage';
+import AdminPage from './pages/AdminPage';
 
 function HomePage() {
   return (
@@ -148,6 +149,7 @@ function AppContent() {
           <Route path="/auth/reset" element={<PasswordResetPage />} />
           <Route path="/lp-portal" element={<LPPortalPage />} />
           <Route path="/house-view" element={<HouseViewPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
       <FloatingAllocationCta />
@@ -157,7 +159,6 @@ function AppContent() {
       <SmoothScrollSystem />
       <CinematicInteractionSystems />
       <FilmGrainOverlay />
-      <LiveTelemetryBar />
     </div>
   );
 }

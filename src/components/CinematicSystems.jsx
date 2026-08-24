@@ -40,12 +40,6 @@ export function FilmGrainOverlay() {
   return <div className="film-grain-overlay" aria-hidden="true" />;
 }
 
-export function LiveTelemetryBar() {
-  const [time, setTime] = useState(() => new Date());
-  useEffect(() => { const timer = window.setInterval(() => setTime(new Date()), 30000); return () => window.clearInterval(timer); }, []);
-  return <div className="live-telemetry-bar" aria-label="Live operational telemetry"><span className="telemetry-pulse" /> <strong>LIVE / ENCRYPTED SYNC</strong><span>Private operating channel active</span><time dateTime={time.toISOString()}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} EST</time></div>;
-}
-
 export function RollingMetric({ value }) {
   const [display, setDisplay] = useState(0);
   useEffect(() => {
