@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '../context/useAuth';
 import { useAffinity } from './useAffinity';
@@ -7,7 +7,7 @@ import { supabase } from '../utils/supabaseClient';
 
 const SPRING = { type: 'spring', stiffness: 180, damping: 24, mass: 1.2 };
 
-function ConciergeCard({ onSubmit }) {
+const ConciergeCard = memo(function ConciergeCard({ onSubmit }) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const submit = (event) => {
@@ -23,19 +23,20 @@ function ConciergeCard({ onSubmit }) {
     <p className="discovery-compliance">Fully insured global logistics. All acquisitions are handled securely online via direct shipping.</p>
     {open ? <form onSubmit={submit} className="discovery-concierge-form"><input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Direct email" aria-label="Direct email" /><button className="primary-button" type="submit">Submit inquiry</button></form> : <button type="button" className="secondary-button" onClick={() => setOpen(true)}>Submit inquiry →</button>}
   </motion.article>;
-}
+});
 
-function DiscoveryCard({ item, observeCard, savedItems, toggleFavorite, onInquire }) {
+const DiscoveryCard = memo(function DiscoveryCard({ item, observeCard, savedItems, toggleFavorite, onInquire }) {
   const saved = savedItems.includes(item.id);
   return <motion.article ref={observeCard} data-reference={item.reference} data-brand={item.brand} data-price={item.price} className="discovery-card" initial={{ opacity: 0, y: 28, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={SPRING}>
     <div className="discovery-card-image"><span>{item.category}</span><b>{item.brand}</b></div>
     <div className="discovery-card-copy"><span className="discovery-lane">{item.lane}</span><h3>{item.title}</h3><p>{item.descriptor}</p><div className="discovery-card-meta"><strong>{item.price ? `$${Number(item.price).toLocaleString()}` : 'Private terms'}</strong><code>{item.reference}</code></div></div>
     <div className="discovery-card-actions"><button type="button" className={saved ? 'discovery-favorite is-saved' : 'discovery-favorite'} onClick={() => toggleFavorite({ id: item.id, name: item.title, category: item.category, price: item.price })} aria-label={saved ? `Remove ${item.title}` : `Save ${item.title}`}>{saved ? 'Saved' : 'Save to vault'}</button><button type="button" className="discovery-inquire" onClick={() => onInquire(item)}>Request details →</button></div>
   </motion.article>;
-}
+});
 
 function VirtualDiscoveryList({ feed, renderItem }) {
   const viewportRef = useRef(null);
+  const scrollFrameRef = useRef(null);
   const [scrollTop, setScrollTop] = useState(0);
   const itemHeight = 430;
   const overscan = 3;
@@ -45,9 +46,15 @@ function VirtualDiscoveryList({ feed, renderItem }) {
   useEffect(() => {
     const node = viewportRef.current;
     if (!node) return undefined;
-    const onScroll = () => setScrollTop(node.scrollTop);
+    const onScroll = () => {
+      if (scrollFrameRef.current) return;
+      scrollFrameRef.current = requestAnimationFrame(() => {
+        setScrollTop(node.scrollTop);
+        scrollFrameRef.current = null;
+      });
+    };
     node.addEventListener('scroll', onScroll, { passive: true });
-    return () => node.removeEventListener('scroll', onScroll);
+    return () => { node.removeEventListener('scroll', onScroll); if (scrollFrameRef.current) cancelAnimationFrame(scrollFrameRef.current); };
   }, []);
   return <div className="discovery-feed-viewport" ref={viewportRef} aria-label="Curated private discovery feed"><div style={{ height: `${feed.length * itemHeight}px`, position: 'relative' }}><div className="discovery-feed-window" style={{ transform: `translateY(${start * itemHeight}px)` }}>{visible.map((item, index) => renderItem(item, start + index))}</div></div></div>;
 }

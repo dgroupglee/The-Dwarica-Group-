@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { RollingMetric } from './CinematicSystems';
 
 
@@ -12,31 +12,26 @@ const heroStats = [
 export default function HeroSection() {
   const root = useRef(null);
   const videoRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', onResize, { passive: true });
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || isMobile) return undefined;
+    if (!video) return undefined;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) video.play().catch(() => undefined);
       else video.pause();
     }, { threshold: 0.05 });
     observer.observe(root.current);
     return () => observer.disconnect();
-  }, [isMobile]);
+  }, []);
 
   return (
     <section ref={root} id="hero" className="hero-section site-shell">
-      {isMobile ? <div className="hero-mobile-background" aria-hidden="true" /> : <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background">
+      <div className="hero-mobile-background" aria-hidden="true" />
+      <div className="hero-video-layer" aria-hidden="true" data-video-slot="hero-background">
         {/* Replace /hero-video.mp4 with actual video file when available */}
-        <video ref={videoRef} autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
+        <video ref={videoRef} autoPlay muted loop playsInline preload="metadata" poster="/hero-poster.jpg" aria-hidden="true">
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
-      </div>}
+      </div>
       <div className="hero-video-overlay" aria-hidden="true" />
       <div className="hero-grid">
         <div className="hero-copy">

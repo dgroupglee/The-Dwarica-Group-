@@ -39,6 +39,16 @@ export default function CapitalDesk() {
         <h2 className="section-title">Private allocation begins with direct principal continuity.</h2>
         <ExecutiveIntelligenceCockpit />
 
+        <div className="investment-mandate-module">
+          <div className="investment-mandate-header"><span className="section-kicker">Acquisition mandate / principal standard</span><h3>Control positions with an operating edge.</h3><p>The desk prioritizes durable cash flow, clear ownership pathways, and assets where disciplined execution can improve the basis over time.</p></div>
+          <div className="investment-mandate-grid">
+            <div><span>Target profile</span><strong>$200K–$2M SDE / EBITDA</strong><p>Established operating businesses with resilient demand and identifiable improvement levers.</p></div>
+            <div><span>Preferred verticals</span><strong>Real assets / services / specialty operators</strong><p>Fragmented categories where local knowledge and operating control create a durable advantage.</p></div>
+            <div><span>Ownership posture</span><strong>Control or aligned governance</strong><p>We seek a defined decision-rights framework and a credible path to long-duration ownership.</p></div>
+          </div>
+          <div className="settlement-protocol"><span>Institutional settlement protocol</span><p>When terms are confirmed, settlement is coordinated through documented bank-to-bank wire execution, legal escrow where appropriate, and verified physical asset handover or insured direct shipping.</p></div>
+        </div>
+
         <div className="capital-intake-wrap">
           <div className="capital-intake-copy">
             <span className="capital-card-label">Principal portal</span>

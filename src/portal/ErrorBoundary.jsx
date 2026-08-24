@@ -7,8 +7,12 @@ export default class ErrorBoundary extends Component {
     return { hasError: true };
   }
 
+  componentDidCatch(error, info) {
+    console.error('DGroup runtime recovery', error, info);
+  }
+
   render() {
     if (!this.state.hasError) return this.props.children;
-    return <section className="discovery-error-boundary"><span className="section-kicker">Private desk / recovery</span><h2>The curation loop is recalibrating.</h2><p>We protected your private session. Refresh the feed to continue exploring current allocations.</p><button type="button" className="primary-button" onClick={() => window.location.reload()}>Reload private feed</button></section>;
+    return <section className="discovery-error-boundary"><span className="section-kicker">DGroup / recovery</span><h2>The platform is recalibrating.</h2><p>We protected the session. Refresh the page to restore the operating view.</p><button type="button" className="primary-button" onClick={() => window.location.reload()}>Reload platform</button></section>;
   }
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/useAuth';
 
 const navItems = [
@@ -14,6 +14,23 @@ export default function Navigation() {
   const { savedItems, user } = useAuth();
   const authenticated = Boolean(user && !user.is_anonymous);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') { setMobileOpen(false); return; }
+      if (event.key !== 'Tab') return;
+      const menu = document.getElementById('mobile-navigation');
+      const focusable = menu ? [...menu.querySelectorAll('a, button')].filter((item) => !item.disabled) : [];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [mobileOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0A0A0A]/80 backdrop-blur-xl">
