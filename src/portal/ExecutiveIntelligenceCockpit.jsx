@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { supabase } from '../utils/supabaseClient';
 
 const fallback = [
   { stream: 'Macro rates', value: 'SOFR / 5.33%', detail: 'Public benchmark fallback' },
@@ -26,18 +27,22 @@ export default function ExecutiveIntelligenceCockpit() {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
-      const fredKey = import.meta.env.VITE_FRED_API_KEY;
-      const alphaKey = import.meta.env.VITE_ALPHA_VANTAGE_KEY;
-      const fmpKey = import.meta.env.VITE_FMP_API_KEY;
-      const [fred, metals, fx, gold, marketHours, sec, fedCalendar] = await Promise.all([
-        fredKey ? request(`https://api.stlouisfed.org/fred/series/observations?series_id=SOFR&api_key=${fredKey}&file_type=json&sort_order=desc&limit=1`) : null,
-        request('https://api.metals.live/v1/spot'),
-        request('https://open.er-api.com/v6/latest/USD'),
-        alphaKey ? request(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=XAU&to_currency=USD&apikey=${alphaKey}`) : null,
-        fmpKey ? request(`https://financialmodelingprep.com/api/v3/market-hours?apikey=${fmpKey}`) : null,
-        request('https://data.sec.gov/submissions/CIK0000320193.json', { headers: { Accept: 'application/json' } }),
-        requestText('https://www.federalreserve.gov/feeds/press_all.xml'),
-      ]);
+      const { data: deskData } = await supabase.functions.invoke('market-data');
+      let fred = deskData?.fred;
+      let metals = deskData?.metals;
+      let fx = deskData?.fx;
+      let gold = deskData?.gold;
+      let marketHours = deskData?.marketHours;
+      let sec = deskData?.sec;
+      let fedCalendar = deskData?.fedCalendar;
+      if (!deskData) {
+        [metals, fx, sec, fedCalendar] = await Promise.all([
+          request('https://api.metals.live/v1/spot'),
+          request('https://open.er-api.com/v6/latest/USD'),
+          request('https://data.sec.gov/submissions/CIK0000320193.json', { headers: { Accept: 'application/json' } }),
+          requestText('https://www.federalreserve.gov/feeds/press_all.xml'),
+        ]);
+      }
       if (cancelled) return;
       const sofr = fred?.observations?.[0]?.value;
       const spotGold = gold?.['Realtime Currency Exchange Rate']?.['5. Exchange Rate'] || (Array.isArray(metals) ? metals.find((item) => item.gold)?.gold : null);

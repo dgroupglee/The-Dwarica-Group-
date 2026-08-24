@@ -39,6 +39,7 @@ function createUnavailableClient() {
       signOut: () => Promise.resolve({ error: unavailableError }),
     },
     from: unavailableBuilder,
+    functions: { invoke: () => Promise.resolve({ data: null, error: unavailableError }) },
     channel: () => ({ on: () => ({ on: () => ({ subscribe: () => undefined }) }) }),
     removeChannel: () => undefined,
   }
