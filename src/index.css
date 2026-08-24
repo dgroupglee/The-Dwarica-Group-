@@ -2200,7 +2200,41 @@ html.lenis {
   .compounding-engine-interactive { padding: 4.5rem 1.25rem; }
   .strategies-section { min-height: 0; }
   .strategy-viewport-shell { min-height: 0; }
-  .strategy-viewport { position: relative; top: auto; height: auto; min-height: 0; }
+  .strategy-viewport {
+    position: relative;
+    top: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    height: auto;
+    min-height: 0;
+    margin-top: 34px;
+    perspective: none;
+  }
+  .strategy-stack {
+    min-height: 0;
+    perspective: none;
+    transform-style: flat;
+  }
+  .strategy-panel-item {
+    position: relative;
+    inset: auto;
+    min-height: 0;
+    padding: 28px 22px 24px;
+    transform: none !important;
+    filter: none !important;
+  }
+  .strategy-panel-head { align-items: flex-start; gap: 14px; }
+  .strategy-heading {
+    max-width: none;
+    margin-top: 26px;
+    font-size: clamp(2.65rem, 13vw, 4.2rem);
+    line-height: .94;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+  .strategy-body { max-width: none; font-size: 15px; line-height: 1.75; }
   .compounding-engine-header { margin-bottom: 2.5rem; }
   .compounding-stage-grid { grid-template-columns: 1fr; }
   .compounding-stage { padding: 2rem 1.5rem; }
