@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const cleanEnvValue = (value) => String(value || '').trim().replace(/^['"]|['"]$/g, '')
+const supabaseUrl = cleanEnvValue(import.meta.env.VITE_SUPABASE_URL)
+const supabaseAnonKey = cleanEnvValue(import.meta.env.VITE_SUPABASE_ANON_KEY)
 
 const unavailableError = new Error('Supabase is not configured for this deployment.')
 const unavailableQuery = () => Promise.resolve({ data: [], error: unavailableError })

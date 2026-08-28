@@ -36,7 +36,10 @@ export default function AuthModal({ onClose, gated = false }) {
         if (result?.ok === false) throw new Error(result.message || result.error || 'Unable to complete this request.');
         setSent(true); setMessage('Private access request received.');
       }
-    } catch (authError) { setError(authError.message || 'Unable to complete this request.'); } finally { setLoading(false); }
+    } catch (authError) {
+      const authMessage = authError.message || 'Unable to complete this request.';
+      setError(/invalid api key/i.test(authMessage) ? 'Account access is temporarily unavailable. The site administrator must update the Supabase public API key in the deployment settings.' : authMessage);
+    } finally { setLoading(false); }
   };
   const needsPassword = mode === 'signin' || mode === 'signup';
   const title = mode === 'signin' ? 'Return to your private command center.' : mode === 'signup' ? 'Create your private DGroup account.' : mode === 'magic' ? 'Use a passwordless access link.' : mode === 'reset' ? 'Recover your private access.' : 'Request a private allocation profile.';
